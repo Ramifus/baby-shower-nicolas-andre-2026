@@ -1,0 +1,232 @@
+---
+// src/components/NombresPadres.astro
+// "Mis papitos": los nombres de los padres, el marco con la foto (marco.png),
+// el mensaje y la cerca de abajo (cerca.png).
+// Todo en cqw sobre un lienzo de ancho fijo, igual que el resto de secciones.
+
+const mama = "Camila";
+const papa = "Cristina";
+---
+
+<section id="padres-section">
+  <div id="np-wrap">
+    <!-- ═══════ TÍTULO + NOMBRES ═══════ -->
+    <p id="np-titulo" class="font-cinzel">Mis papitos</p>
+
+    <img id="np-sepa-1" src="/imagenes/sepa.png" alt="" />
+
+    <h2 id="np-nombres" class="font-great-vibes">{mama} y {papa}</h2>
+
+    <!-- ═══════ MARCO CON LA FOTO ═══════ -->
+    <img id="np-marco" src="/imagenes/marco.png" alt="Los papás" />
+
+    <img id="np-sepa-2" src="/imagenes/sepa.png" alt="" />
+
+    <!-- ═══════ MENSAJE ═══════ -->
+    <p id="np-mensaje" class="font-crimson">
+      Un pequeño vaquero está por llegar, una bendición que Dios nos envió para
+      llenar nuestros días de amor, ternura y esperanza. Acompáñanos a celebrar
+      la dulce espera de nuestro mayor regalo.
+    </p>
+
+    <!-- ═══════ CERCA ═══════ -->
+    <img id="np-cerca" src="/imagenes/cerca.png" alt="" />
+  </div>
+</section>
+
+<style>
+  #padres-section {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    /* deja ver el fondo global estático del Layout */
+    background: transparent;
+  }
+
+  /* ═══════ LIENZO (mismo ancho que el resto) ═══════ */
+  #np-wrap {
+    position: relative;
+    width: min(100vw, 480px);
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10cqw 0 0;
+  }
+
+  #np-wrap img {
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* ── Título ── */
+  #np-titulo {
+    margin: 0;
+    font-size: 7cqw;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    /* compensa el espacio que letter-spacing deja tras la última letra */
+    text-indent: 0.08em;
+    text-transform: uppercase;
+    color: #6b4326;
+    text-shadow: 0 1px 0 rgba(255, 252, 245, 0.8);
+  }
+
+  #np-sepa-1 {
+    width: 34cqw;
+    height: auto;
+    margin-top: 2cqw;
+  }
+
+  /* ── Nombres de los papás ── */
+  #np-nombres {
+    margin: 2cqw 0 0;
+    /* Great Vibes no tolera versales ni espaciado entre letras */
+    font-size: 14cqw;
+    line-height: 1.25;
+    font-weight: 400;
+    color: #8a6242;
+    text-shadow: 0 1px 0 rgba(255, 252, 245, 0.8);
+  }
+
+  /* ── Marco con la foto ── */
+  #np-marco {
+    width: 98cqw;
+    height: auto;
+    margin-top: 2cqw;
+  }
+
+  #np-sepa-2 {
+    width: 34cqw;
+    height: auto;
+    margin-top: 1cqw;
+  }
+
+  /* ── Mensaje ── */
+  #np-mensaje {
+    width: 86cqw;
+    margin: 3cqw 0 0;
+    font-size: 5.4cqw;
+    line-height: 1.55;
+    font-weight: 400;
+    color: #6d4830;
+    text-shadow: 0 1px 0 rgba(255, 252, 245, 0.8);
+  }
+
+  /* ── Cerca de abajo ── */
+  #np-cerca {
+    width: 100%;
+    height: auto;
+    margin-top: 4cqw;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // ── Entrada animada ───────────────────────────────────────
+    // El título y los nombres se abren desde los costados, el marco con la
+    // foto sube, y la cerca cierra desde abajo.
+    const inicial = () => {
+      gsap.killTweensOf("#np-marco");
+      gsap.set("#np-titulo", { opacity: 0, y: -26 });
+      gsap.set("#np-sepa-1", { opacity: 0, scaleX: 0.2 });
+      gsap.set("#np-nombres", { opacity: 0, x: -60, rotation: -2 });
+      gsap.set("#np-marco", { opacity: 0, y: 60, scale: 0.88, rotation: -2 });
+      gsap.set("#np-sepa-2", { opacity: 0, scaleX: 0.2 });
+      gsap.set("#np-mensaje", { opacity: 0, x: 60, rotation: 1 });
+      gsap.set("#np-cerca", { opacity: 0, y: 46, scale: 0.97 });
+    };
+
+    inicial();
+
+    // el marco respira despacito, para que la foto no quede muerta
+    const respirar = () => {
+      gsap.to("#np-marco", {
+        y: -7,
+        duration: 3.6,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    };
+
+    const armarEntrada = () => {
+      ScrollTrigger.create({
+        trigger: "#padres-section",
+        start: "top 85%",
+        onEnter: () => {
+          const tl = gsap.timeline({ defaults: { duration: 1.5 } });
+
+          tl.to(
+            "#np-titulo",
+            { opacity: 1, y: 0, duration: 1.4, ease: "elastic.out(1, 0.8)" },
+            0,
+          )
+            .to(
+              "#np-sepa-1",
+              { opacity: 1, scaleX: 1, duration: 1.3, ease: "elastic.out(1, 0.6)" },
+              0.12,
+            )
+            .to(
+              "#np-nombres",
+              { opacity: 1, x: 0, rotation: 0, ease: "power3.out" },
+              0.08,
+            )
+            .to(
+              "#np-marco",
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                rotation: 0,
+                duration: 1.7,
+                ease: "back.out(1.4)",
+              },
+              0.15,
+            )
+            .to(
+              "#np-sepa-2",
+              { opacity: 1, scaleX: 1, duration: 1.3, ease: "elastic.out(1, 0.6)" },
+              0.35,
+            )
+            .to(
+              "#np-mensaje",
+              { opacity: 1, x: 0, rotation: 0, ease: "power3.out" },
+              0.3,
+            )
+            .to(
+              "#np-cerca",
+              { opacity: 1, y: 0, scale: 1, duration: 1.6, ease: "power3.out" },
+              0.2,
+            )
+            .add(respirar, 2);
+        },
+        // al volver a subir se rearma, así la animación se repite en cada bajada
+        onLeaveBack: inicial,
+      });
+
+      ScrollTrigger.refresh();
+    };
+
+    // Igual que el resto de secciones: recién anima cuando el invitado abre
+    // el sobre, así la animación no se gasta detrás de la portada.
+    const hayPortada = document.getElementById("portada-section");
+
+    if (!hayPortada || (window as any).invitacionAbierta) {
+      armarEntrada();
+    } else {
+      window.addEventListener("invitacion-abierta", armarEntrada, {
+        once: true,
+      });
+    }
+  });
+</script>

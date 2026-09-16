@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* Fuente personalizada Selna (el archivo tiene un espacio en el nombre,
+   por eso la URL va con %20). La usa el nombre de la bebé. */
+@font-face {
+  font-family: 'Selna';
+  src: url('/fonts/Selna%20Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-selna {
+  font-family: 'Selna', cursive !important;
+}
+
+/* Nombres de los padres y títulos en script */
+.font-great-vibes {
+  font-family: 'Great Vibes', cursive !important;
+}
+
+/* Instrucción de la portada */
+.font-crimson {
+  font-family: 'Crimson Text', serif !important;
+}
+
+/* Fuente principal de la invitación: versalitas y textos */
+.font-cinzel {
+  font-family: 'Cinzel', serif !important;
+}

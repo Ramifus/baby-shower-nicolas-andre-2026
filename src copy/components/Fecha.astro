@@ -1,0 +1,372 @@
+---
+// src/components/Fecha.astro
+// Fecha del evento: los banderines arriba, el vaquerito en la luna
+// (nino3.png), la fila día · número · mes · hora, y la cuenta regresiva
+// sobre el cartel de madera (contador.png).
+// Todo en cqw sobre un lienzo de ancho fijo, igual que el resto de secciones.
+
+const fecha = {
+  dia: "Domingo",
+  numero: "27",
+  mes: "Septiembre",
+  hora: "3:00 PM",
+  // año y hora que usa la cuenta regresiva
+  objetivo: "2026-09-27T15:00:00",
+};
+---
+
+<section id="fecha-section">
+  <div id="fe-wrap">
+    <!-- ═══════ BANDERINES ═══════ -->
+    <img id="fe-banderin-izq" src="/imagenes/banderin.png" alt="" />
+    <img id="fe-banderin-der" src="/imagenes/banderin.png" alt="" />
+
+    <!-- ═══════ VAQUERITO EN LA LUNA ═══════ -->
+    <img id="fe-nino3" src="/imagenes/nino3.png" alt="" />
+
+    <!-- ═══════ FECHA ═══════ -->
+    <div id="fe-fecha">
+      <div class="fe-lado">
+        <span class="fe-linea"></span>
+        <p class="fe-dato font-cinzel">{fecha.dia}</p>
+        <span class="fe-linea fe-linea-baja"></span>
+      </div>
+
+      <span class="fe-soga"></span>
+
+      <div id="fe-centro">
+        <p id="fe-mes" class="font-crimson">{fecha.mes}</p>
+        <p id="fe-numero" class="font-crimson">{fecha.numero}</p>
+      </div>
+
+      <span class="fe-soga"></span>
+
+      <div class="fe-lado">
+        <span class="fe-linea"></span>
+        <p class="fe-dato font-cinzel">{fecha.hora}</p>
+        <span class="fe-linea fe-linea-baja"></span>
+      </div>
+    </div>
+
+    <!-- ═══════ CUENTA REGRESIVA SOBRE EL CARTEL ═══════ -->
+    <div id="fe-contador" data-objetivo={fecha.objetivo}>
+      <img id="fe-cartel" src="/imagenes/contador.png" alt="" />
+
+      <div id="fe-cuenta">
+        <p id="fe-cuanto" class="font-great-vibes">¿Cuánto falta?</p>
+
+        <!-- cada número lleva su etiqueta debajo, así nunca se corren -->
+        <div id="fe-numeros" class="font-crimson">
+          <span class="fe-caja">
+            <span id="fe-dias">00</span>
+            <span class="fe-lbl font-cinzel">Días</span>
+          </span>
+          <span class="fe-dospuntos">:</span>
+          <span class="fe-caja">
+            <span id="fe-horas">00</span>
+            <span class="fe-lbl font-cinzel">Hrs</span>
+          </span>
+          <span class="fe-dospuntos">:</span>
+          <span class="fe-caja">
+            <span id="fe-minutos">00</span>
+            <span class="fe-lbl font-cinzel">Min</span>
+          </span>
+          <span class="fe-dospuntos">:</span>
+          <span class="fe-caja">
+            <span id="fe-segundos">00</span>
+            <span class="fe-lbl font-cinzel">Seg</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #fecha-section {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    /* deja ver el fondo global estático del Layout */
+    background: transparent;
+  }
+
+  /* ═══════ LIENZO (mismo ancho que el resto) ═══════ */
+  #fe-wrap {
+    position: relative;
+    width: min(100vw, 480px);
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 4cqw 0 0;
+  }
+
+  #fe-wrap img {
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* ── Banderines de arriba ── */
+  #fe-banderin-izq,
+  #fe-banderin-der {
+    position: absolute;
+    top: 0;
+    width: 36cqw;
+    height: auto;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  #fe-banderin-izq {
+    left: -2cqw;
+  }
+
+  #fe-banderin-der {
+    right: -2cqw;
+    /* espejado para que el moño quede del lado de afuera */
+    transform: scaleX(-1);
+  }
+
+  /* ── Vaquerito en la luna ── */
+  #fe-nino3 {
+    width: 62cqw;
+    height: auto;
+    margin-top: 10cqw;
+    z-index: 2;
+  }
+
+  /* ── Fila de la fecha ── */
+  #fe-fecha {
+    width: 96cqw;
+    margin-top: 10cqw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5cqw;
+    z-index: 2;
+  }
+
+  .fe-lado {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6cqw;
+  }
+
+  .fe-linea {
+    display: block;
+    width: 100%;
+    height: 0.7cqw;
+    border-radius: 999px;
+    background: #9a6f45;
+  }
+
+  .fe-linea-baja {
+    width: 86%;
+  }
+
+  .fe-dato {
+    margin: 0;
+    font-size: 5.4cqw;
+    line-height: 1.1;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    /* compensa el espacio que letter-spacing deja tras la última letra */
+    text-indent: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #6b4326;
+  }
+
+  /* cuerda vertical que separa las tres columnas */
+  .fe-soga {
+    display: block;
+    width: 1.6cqw;
+    height: 17cqw;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #d8ac7c 0%, #b9854f 50%, #d8ac7c 100%);
+    flex: none;
+  }
+
+  #fe-centro {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #fe-mes {
+    margin: 0;
+    font-size: 5.6cqw;
+    line-height: 1.1;
+    font-weight: 600;
+    color: #6b4326;
+  }
+
+  #fe-numero {
+    margin: 0;
+    font-size: 12cqw;
+    line-height: 1.05;
+    font-weight: 700;
+    color: #5c7fa3;
+  }
+
+  /* ── Cuenta regresiva sobre el cartel ── */
+  #fe-contador {
+    position: relative;
+    width: 100%;
+    margin-top: 9cqw;
+    z-index: 2;
+  }
+
+  #fe-cartel {
+    width: 100%;
+    height: auto;
+  }
+
+  /* el bloque queda dentro del papel del cartel */
+  #fe-cuenta {
+    position: absolute;
+    top: 26%;
+    left: 22%;
+    right: 22%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #fe-cuanto {
+    margin: 0;
+    font-size: 8.5cqw;
+    line-height: 1.1;
+    color: #6b4326;
+  }
+
+  #fe-numeros {
+    margin-top: 1cqw;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1.6cqw;
+    font-size: 9cqw;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #6b4326;
+  }
+
+  .fe-caja {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .fe-lbl {
+    font-size: 2.9cqw;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    /* compensa el espacio que letter-spacing deja tras la última letra */
+    text-indent: 0.04em;
+    text-transform: uppercase;
+    color: #7a5334;
+  }
+
+  .fe-dospuntos {
+    font-size: 7cqw;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // ── Cuenta regresiva ──────────────────────────────────────
+    const caja = document.getElementById("fe-contador");
+    const objetivo = new Date(caja?.dataset.objetivo ?? "").getTime();
+
+    const dosDigitos = (n: number) => String(Math.max(0, n)).padStart(2, "0");
+
+    const pintar = () => {
+      const faltan = objetivo - Date.now();
+
+      const seg = Math.max(0, Math.floor(faltan / 1000));
+      const dias = Math.floor(seg / 86400);
+      const horas = Math.floor((seg % 86400) / 3600);
+      const minutos = Math.floor((seg % 3600) / 60);
+      const segundos = seg % 60;
+
+      const poner = (id: string, valor: number) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = dosDigitos(valor);
+      };
+
+      poner("fe-dias", dias);
+      poner("fe-horas", horas);
+      poner("fe-minutos", minutos);
+      poner("fe-segundos", segundos);
+    };
+
+    pintar();
+    setInterval(pintar, 1000);
+
+    // ── Entrada animada ───────────────────────────────────────
+    const inicial = () => {
+      gsap.set(["#fe-banderin-izq", "#fe-banderin-der"], { opacity: 0, y: -24 });
+      gsap.set("#fe-nino3", { opacity: 0, y: 30, scale: 0.94 });
+      gsap.set("#fe-fecha", { opacity: 0, y: 18 });
+      gsap.set("#fe-contador", { opacity: 0, y: 26, scale: 0.96 });
+    };
+
+    inicial();
+
+    const armarEntrada = () => {
+      ScrollTrigger.create({
+        trigger: "#fecha-section",
+        start: "top 85%",
+        onEnter: () => {
+          const tl = gsap.timeline();
+          tl.to(
+            ["#fe-banderin-izq", "#fe-banderin-der"],
+            { opacity: 1, y: 0, duration: 1.3, stagger: 0.1, ease: "power2.out" },
+            0,
+          )
+            .to(
+              "#fe-nino3",
+              { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: "back.out(1.2)" },
+              0.15,
+            )
+            .to("#fe-fecha", { opacity: 1, y: 0, duration: 1.3, ease: "power2.out" }, 0.35)
+            .to(
+              "#fe-contador",
+              { opacity: 1, y: 0, scale: 1, duration: 1.4, ease: "back.out(1.1)" },
+              0.5,
+            );
+        },
+        // al volver a subir se rearma, así la animación se repite en cada bajada
+        onLeaveBack: inicial,
+      });
+
+      ScrollTrigger.refresh();
+    };
+
+    // Igual que el resto de secciones: recién anima cuando el invitado abre
+    // el sobre, así la animación no se gasta detrás de la portada.
+    const hayPortada = document.getElementById("portada-section");
+
+    if (!hayPortada || (window as any).invitacionAbierta) {
+      armarEntrada();
+    } else {
+      window.addEventListener("invitacion-abierta", armarEntrada, {
+        once: true,
+      });
+    }
+  });
+</script>

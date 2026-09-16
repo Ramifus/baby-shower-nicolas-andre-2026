@@ -1,0 +1,105 @@
+---
+// src/components/Foto2.astro
+// Una sola foto: foto4.png ya viene con su marco, así que acá solo se
+// muestra centrada y con la misma entrada animada del resto de secciones.
+---
+
+<section id="foto2-section">
+  <div id="f2-wrap">
+    <img id="f2-foto" src="/imagenes/foto4.png" alt="" />
+  </div>
+</section>
+
+<style>
+  #foto2-section {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    /* deja ver el fondo global estático del Layout */
+    background: transparent;
+    padding: 2rem 0;
+  }
+
+  /* ═══════ LIENZO (mismo ancho que el resto) ═══════ */
+  #f2-wrap {
+    position: relative;
+    width: min(100vw, 480px);
+    container-type: inline-size;
+    display: flex;
+    justify-content: center;
+  }
+
+  #f2-foto {
+    display: block;
+    width: 92cqw;
+    height: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // ── Entrada animada ───────────────────────────────────────
+    // Sube con una inclinación que se endereza al llegar, y después queda
+    // respirando, como el marco de los papás.
+    const inicial = () => {
+      gsap.killTweensOf("#f2-foto");
+      gsap.set("#f2-foto", { opacity: 0, y: 60, scale: 0.88, rotation: -2 });
+    };
+
+    inicial();
+
+    const respirar = () => {
+      gsap.to("#f2-foto", {
+        y: -7,
+        duration: 3.6,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+    };
+
+    const armarEntrada = () => {
+      ScrollTrigger.create({
+        trigger: "#foto2-section",
+        start: "top 85%",
+        onEnter: () => {
+          gsap
+            .timeline()
+            .to("#f2-foto", {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotation: 0,
+              duration: 1.7,
+              ease: "back.out(1.4)",
+            })
+            .add(respirar, 2);
+        },
+        // al volver a subir se rearma, así la animación se repite en cada bajada
+        onLeaveBack: inicial,
+      });
+
+      ScrollTrigger.refresh();
+    };
+
+    // Igual que el resto de secciones: recién anima cuando el invitado abre
+    // el sobre, así la animación no se gasta detrás de la portada.
+    const hayPortada = document.getElementById("portada-section");
+
+    if (!hayPortada || (window as any).invitacionAbierta) {
+      armarEntrada();
+    } else {
+      window.addEventListener("invitacion-abierta", armarEntrada, {
+        once: true,
+      });
+    }
+  });
+</script>
