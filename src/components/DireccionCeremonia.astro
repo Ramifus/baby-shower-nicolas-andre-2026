@@ -17,10 +17,12 @@ const confirmacion = {
   mensaje:
     "¡Hola! Confirmo mi asistencia al Baby Shower. Nos vemos el domingo 27 de septiembre.",
   // Bolivia (+591)
-  telefono: "59165504338",
+  papa: { nombre: "Confirmar con papá", telefono: "59179366269" },
+  mama: { nombre: "Confirmar con mamá", telefono: "59165504338" },
 };
 
-const linkConfirmar = `https://wa.me/${confirmacion.telefono}?text=${encodeURIComponent(confirmacion.mensaje)}`;
+const linkPapa = `https://wa.me/${confirmacion.papa.telefono}?text=${encodeURIComponent(confirmacion.mensaje)}`;
+const linkMama = `https://wa.me/${confirmacion.mama.telefono}?text=${encodeURIComponent(confirmacion.mensaje)}`;
 ---
 
 <section id="ceremonia-section">
@@ -86,7 +88,7 @@ const linkConfirmar = `https://wa.me/${confirmacion.telefono}?text=${encodeURICo
       <div id="cf-botones">
         <a
           class="cf-boton font-cinzel"
-          href={linkConfirmar}
+          href={linkPapa}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -95,7 +97,21 @@ const linkConfirmar = `https://wa.me/${confirmacion.telefono}?text=${encodeURICo
               d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.6 14.1c-.2.7-1.2 1.3-1.9 1.4-.5.1-1.1.2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2 0 .4 0 .5l-.4.5-.3.3c-.1.1-.2.3 0 .5.2.4.8 1.3 1.7 2.1 1.1 1 2 1.3 2.3 1.4.2.1.4.1.5-.1l.8-.9c.2-.2.3-.2.5-.1l2 .9c.2.1.4.2.4.3.1.2.1.7-.2 1.7Z"
             ></path>
           </svg>
-          Confirmar
+          {confirmacion.papa.nombre}
+        </a>
+
+        <a
+          class="cf-boton font-cinzel"
+          href={linkMama}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg class="cf-wa" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.6 14.1c-.2.7-1.2 1.3-1.9 1.4-.5.1-1.1.2-3.2-.7-2.7-1.1-4.4-3.9-4.5-4-.1-.2-1.1-1.4-1.1-2.7s.7-1.9.9-2.2c.2-.2.5-.3.6-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2 0 .4 0 .5l-.4.5-.3.3c-.1.1-.2.3 0 .5.2.4.8 1.3 1.7 2.1 1.1 1 2 1.3 2.3 1.4.2.1.4.1.5-.1l.8-.9c.2-.2.3-.2.5-.1l2 .9c.2.1.4.2.4.3.1.2.1.7-.2 1.7Z"
+            ></path>
+          </svg>
+          {confirmacion.mama.nombre}
         </a>
       </div>
     </div>
